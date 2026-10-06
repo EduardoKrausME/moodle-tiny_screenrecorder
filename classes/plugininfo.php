@@ -50,11 +50,7 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
             return false;
         }
 
-        if (empty($options['maxfiles'])) {
-            return false;
-        }
-
-        return !empty($fpoptions['media']);
+        return !empty($options['maxfiles']);
     }
 
     /**
@@ -94,11 +90,14 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
         array $fpoptions,
         ?editor $editor = null
     ): array {
-        $mediaoptions = $fpoptions['media'] ?? [];
-        if (is_object($mediaoptions)) {
-            $itemid = (int) ($mediaoptions->itemid ?? 0);
-        } else {
-            $itemid = (int) ($mediaoptions['itemid'] ?? 0);
+        $itemid = (int) ($options['itemid'] ?? 0);
+        if ($itemid <= 0) {
+            $mediaoptions = $fpoptions['media'] ?? [];
+            if (is_object($mediaoptions)) {
+                $itemid = (int) ($mediaoptions->itemid ?? 0);
+            } else {
+                $itemid = (int) ($mediaoptions['itemid'] ?? 0);
+            }
         }
 
         $maxbytes = get_user_max_upload_file_size($context);
