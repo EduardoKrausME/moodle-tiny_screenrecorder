@@ -22,38 +22,4 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {getTinyMCE} from 'editor_tiny/loader';
-import {getButtonImage, getPluginMetadata} from 'editor_tiny/utils';
-import {get_string as getString} from 'core/str';
-import {component, pluginName, buttonName, buttonIcon} from './common';
-import {register as registerOptions} from './options';
-import {openRecorder} from './recorder';
-import * as Configuration from './configuration';
-
-// eslint-disable-next-line no-async-promise-executor
-export default new Promise(async(resolve) => {
-    const [tinyMCE, buttonText, buttonImage, pluginMetadata] = await Promise.all([
-        getTinyMCE(),
-        getString('buttontitle', component),
-        getButtonImage('screen', component),
-        getPluginMetadata(component, pluginName),
-    ]);
-
-    tinyMCE.PluginManager.add(`${component}/plugin`, (editor) => {
-        registerOptions(editor);
-        editor.ui.registry.addIcon(buttonIcon, buttonImage.html);
-        editor.ui.registry.addButton(buttonName, {
-            icon: buttonIcon,
-            tooltip: buttonText,
-            onAction: () => openRecorder(editor),
-        });
-        editor.ui.registry.addMenuItem(buttonName, {
-            icon: buttonIcon,
-            text: buttonText,
-            onAction: () => openRecorder(editor),
-        });
-        return pluginMetadata;
-    });
-
-    resolve([`${component}/plugin`, Configuration]);
-});
+define(["exports","editor_tiny/loader","editor_tiny/utils","core/str","./common","./options","./recorder","./configuration"],function(_exports,_loader,_utils,_str,_common,_options,_recorder,Configuration){"use strict";Object.defineProperty(_exports,"__esModule",{value:true});_exports.default=void 0;const pluginPromise=new Promise(async resolve=>{const[tinyMCE,buttonText,buttonImage,pluginMetadata]=await Promise.all([(0,_loader.getTinyMCE)(),(0,_str.get_string)("buttontitle",_common.component),(0,_utils.getButtonImage)("screen",_common.component),(0,_utils.getPluginMetadata)(_common.component,_common.pluginName)]);tinyMCE.PluginManager.add(_common.component+"/plugin",editor=>{(0,_options.register)(editor);editor.ui.registry.addIcon(_common.buttonIcon,buttonImage.html);editor.ui.registry.addButton(_common.buttonName,{icon:_common.buttonIcon,tooltip:buttonText,onAction:()=>(0,_recorder.openRecorder)(editor)});editor.ui.registry.addMenuItem(_common.buttonName,{icon:_common.buttonIcon,text:buttonText,onAction:()=>(0,_recorder.openRecorder)(editor)});return pluginMetadata;});resolve([_common.component+"/plugin",Configuration]);});_exports.default=pluginPromise;});
