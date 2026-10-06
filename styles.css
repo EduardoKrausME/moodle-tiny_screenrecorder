@@ -1,0 +1,24 @@
+.tiny-screenrecorder-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: .5rem;
+    background: #111;
+}
+
+.tiny-screenrecorder-stage video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #111;
+}
+
+.tiny-screenrecorder-disabled {
+    pointer-events: none;
+    opacity: .55;
+}
+
+.tiny-screenrecorder .progress {
+    height: .65rem;
+}
