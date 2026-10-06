@@ -22,26 +22,4 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {getPluginOptionName} from 'editor_tiny/options';
-import {pluginName} from './common';
-
-const dataName = getPluginOptionName(pluginName, 'data');
-
-/**
- * Register plugin configuration supplied by PHP.
- *
- * @param {TinyMCE} editor
- */
-export const register = (editor) => {
-    editor.options.register(dataName, {
-        processor: 'object',
-    });
-};
-
-/**
- * Return configuration for this editor.
- *
- * @param {TinyMCE} editor
- * @returns {Object}
- */
-export const getData = (editor) => editor.options.get(dataName);
+define(["exports","editor_tiny/options","./common"],function(_exports,_editorOptions,_common){"use strict";Object.defineProperty(_exports,"__esModule",{value:true});_exports.register=_exports.getData=void 0;const dataName=(0,_editorOptions.getPluginOptionName)(_common.pluginName,"data");_exports.register=editor=>{editor.options.register(dataName,{processor:"object"});};_exports.getData=editor=>editor.options.get(dataName);});
