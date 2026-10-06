@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 declare(strict_types=1);
 
@@ -30,6 +30,11 @@ use context_system;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class plugininfo_test extends advanced_testcase {
+    /**
+     * Method setUp.
+     *
+     * @return void Return value.
+     */
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
@@ -39,6 +44,11 @@ final class plugininfo_test extends advanced_testcase {
         set_config('allowppt', 1, 'tiny_screenrecorder');
     }
 
+    /**
+     * Method test_guest_user_cannot_use_recorder.
+     *
+     * @return void Return value.
+     */
     public function test_guest_user_cannot_use_recorder(): void {
         $this->setGuestUser();
         $context = context_system::instance();
@@ -50,6 +60,11 @@ final class plugininfo_test extends advanced_testcase {
         ));
     }
 
+    /**
+     * Method test_configuration_contains_editor_context_and_limits.
+     *
+     * @return void Return value.
+     */
     public function test_configuration_contains_editor_context_and_limits(): void {
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
@@ -68,6 +83,11 @@ final class plugininfo_test extends advanced_testcase {
         $this->assertNotEmpty($config['data']['sesskey']);
     }
 
+    /**
+     * Method test_configuration_keeps_legacy_media_itemid_fallback.
+     *
+     * @return void Return value.
+     */
     public function test_configuration_keeps_legacy_media_itemid_fallback(): void {
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
