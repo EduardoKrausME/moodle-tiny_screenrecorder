@@ -22,7 +22,4 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-export const component = 'tiny_screenrecorder';
-export const pluginName = 'tiny_screenrecorder/plugin';
-export const buttonName = 'tiny_screenrecorder_screen';
-export const buttonIcon = 'tiny_screenrecorder_screen';
+define(["exports"],function(_exports){"use strict";Object.defineProperty(_exports,"__esModule",{value:true});_exports.buttonIcon=_exports.buttonName=_exports.pluginName=_exports.component=void 0;_exports.component="tiny_screenrecorder";_exports.pluginName="tiny_screenrecorder/plugin";_exports.buttonName="tiny_screenrecorder_screen";_exports.buttonIcon="tiny_screenrecorder_screen";});
