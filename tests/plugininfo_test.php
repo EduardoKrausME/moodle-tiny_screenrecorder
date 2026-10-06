@@ -45,8 +45,8 @@ final class plugininfo_test extends advanced_testcase {
 
         $this->assertFalse(plugininfo::is_enabled(
             $context,
-            ['maxfiles' => 1],
-            ['media' => ['itemid' => 123]]
+            ['maxfiles' => 1, 'itemid' => 123],
+            []
         ));
     }
 
@@ -57,8 +57,8 @@ final class plugininfo_test extends advanced_testcase {
 
         $config = plugininfo::get_plugin_configuration_for_context(
             $context,
-            ['maxfiles' => 1, 'maxbytes' => 1048576],
-            ['media' => ['itemid' => 123]]
+            ['maxfiles' => 1, 'maxbytes' => 1048576, 'itemid' => 123],
+            []
         );
 
         $this->assertSame($context->id, $config['data']['contextid']);
@@ -66,5 +66,19 @@ final class plugininfo_test extends advanced_testcase {
         $this->assertSame(300, $config['data']['maxduration']);
         $this->assertLessThanOrEqual(1048576, $config['data']['maxbytes']);
         $this->assertNotEmpty($config['data']['sesskey']);
+    }
+
+    public function test_configuration_keeps_legacy_media_itemid_fallback(): void {
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+        $context = context_system::instance();
+
+        $config = plugininfo::get_plugin_configuration_for_context(
+            $context,
+            ['maxfiles' => 1],
+            ['media' => ['itemid' => 456]]
+        );
+
+        $this->assertSame(456, $config['data']['itemid']);
     }
 }
