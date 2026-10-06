@@ -25,40 +25,68 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import Modal from 'core/modal';
-import ModalEvents from 'core/modal_events';
-import * as Templates from 'core/templates';
-import {get_string as getString} from 'core/str';
-import {add as addToast} from 'core/toast';
-import {component} from './common';
-import {KaptureRecorder} from './kapture';
-import {getData} from './options';
+define(["exports","core/modal","core/modal_events","core/templates","core/str","core/toast","./common","./kapture","./options"],function(_exports,_modal,_modalEvents,_templates,_str,_toast,_common,_kapture,_options){"use strict";Object.defineProperty(_exports,"__esModule",{value:true});
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-export const formatDuration = (seconds) => {
+/**
+ * Screen recorder modal controller.
+ *
+ * The browser capture engine lives in kapture.js. This controller only handles Moodle UI,
+ * optional webcam composition, preview, upload and insertion into TinyMCE.
+ *
+ * @module tiny_screenrecorder/recorder
+ * @package tiny_screenrecorder
+ * @copyright 2026 Eduardo Kraus
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+
+
+
+
+
+
+
+
+
+const formatDuration = (seconds) => {
     const safe = Math.max(0, Math.floor(Number(seconds) || 0));
     const minutes = Math.floor(safe / 60);
     return `${minutes}:${String(safe % 60).padStart(2, '0')}`;
 };
 
-export const extensionFromMime = (mimetype) =>
+const extensionFromMime = (mimetype) =>
     String(mimetype).toLowerCase().includes('mp4') ? 'mp4' : 'webm';
 
-export const openRecorder = async(editor) => {
-    const config = getData(editor);
-    const body = await Templates.render('tiny_screenrecorder/recorder', {
+const openRecorder = async(editor) => {
+    const config = _options.getData(editor);
+    const body = await _templates.render('tiny_screenrecorder/recorder', {
         allowwebcam: Boolean(config.allowwebcam),
         allowmicrophone: Boolean(config.allowmicrophone),
         allowppt: Boolean(config.allowppt),
         maxduration: formatDuration(config.maxduration),
     });
-    const modal = await Modal.create({
-        title: await getString('modal:title', component),
+    const modal = await _modal.default.create({
+        title: await _str.get_string('modal:title', _common.component),
         body,
         large: true,
         removeOnClose: true,
     });
     const recorder = new ScreenRecorder(editor, modal, config);
-    modal.getRoot().on(ModalEvents.hidden, () => recorder.destroy());
+    modal.getRoot().on(_modalEvents.default.hidden, () => recorder.destroy());
     modal.show();
 };
 
@@ -113,14 +141,14 @@ class ScreenRecorder {
     }
 
     async start() {
-        if (!KaptureRecorder.isSupported()) {
-            await addToast(await getString('error:browser', component), {type: 'error'});
+        if (!_kapture.KaptureRecorder.isSupported()) {
+            await _toast.add(await _str.get_string('error:browser', _common.component), {type: 'error'});
             return;
         }
 
         this.startButton.disabled = true;
-        this.setStatus(await getString('status:acquiring', component));
-        this.engine = new KaptureRecorder({
+        this.setStatus(await _str.get_string('status:acquiring', _common.component));
+        this.engine = new _kapture.KaptureRecorder({
             microphone: Boolean(this.microphoneCheckbox?.checked),
             systemAudio: true,
             maxDuration: Number(this.config.maxduration),
@@ -152,8 +180,8 @@ class ScreenRecorder {
             this.cleanupExtras();
             this.startButton.disabled = false;
             const message = error?.message || String(error);
-            await addToast(await getString('error:capture', component, message), {type: 'error'});
-            this.setStatus(await getString('status:ready', component));
+            await _toast.add(await _str.get_string('error:capture', _common.component, message), {type: 'error'});
+            this.setStatus(await _str.get_string('status:ready', _common.component));
         }
     }
 
@@ -170,7 +198,7 @@ class ScreenRecorder {
             });
         } catch (error) {
             this.webcamCheckbox.checked = false;
-            await addToast(await getString('error:webcam', component), {type: 'warning'});
+            await _toast.add(await _str.get_string('error:webcam', _common.component), {type: 'warning'});
             return output;
         }
 
@@ -248,7 +276,7 @@ class ScreenRecorder {
             this.elapsedSeconds = this.engine?.getDuration() || 0;
             this.updateTimer(this.elapsedSeconds);
         }, 250);
-        this.setStatus(await getString('status:recording', component));
+        this.setStatus(await _str.get_string('status:recording', _common.component));
     }
 
     stop() {
@@ -266,7 +294,7 @@ class ScreenRecorder {
         if (!result.blob.size) {
             this.setRecordingUi(false);
             this.startButton.disabled = false;
-            await addToast(await getString('error:emptyrecording', component), {type: 'error'});
+            await _toast.add(await _str.get_string('error:emptyrecording', _common.component), {type: 'error'});
             return;
         }
 
@@ -284,7 +312,7 @@ class ScreenRecorder {
         this.preview.load();
         this.setRecordingUi(false, true);
         this.updateTimer(this.elapsedSeconds);
-        this.setStatus(await getString('status:preview', component));
+        this.setStatus(await _str.get_string('status:preview', _common.component));
     }
 
     updateTimer(seconds) {
@@ -317,7 +345,7 @@ class ScreenRecorder {
         this.updateTimer(0);
         this.startButton.disabled = false;
         this.setRecordingUi(false, false);
-        this.setStatus(await getString('status:ready', component));
+        this.setStatus(await _str.get_string('status:ready', _common.component));
     }
 
     download() {
@@ -337,7 +365,7 @@ class ScreenRecorder {
             return;
         }
         if (Number(this.config.maxbytes) >= 0 && this.blob.size > Number(this.config.maxbytes)) {
-            await addToast(await getString('error:filesizelimit', component), {type: 'error'});
+            await _toast.add(await _str.get_string('error:filesizelimit', _common.component), {type: 'error'});
             return;
         }
 
@@ -350,23 +378,23 @@ class ScreenRecorder {
                 const rounded = Math.round(percent);
                 this.progressBar.style.width = `${rounded}%`;
                 this.progressBar.setAttribute('aria-valuenow', String(rounded));
-                getString('status:uploading', component, rounded).then(text => {
+                _str.get_string('status:uploading', _common.component, rounded).then(text => {
                     this.uploadButton.textContent = text;
                 });
             });
-            const html = await Templates.render('tiny_screenrecorder/embed_video', {
+            const html = await _templates.render('tiny_screenrecorder/embed_video', {
                 url: response.url,
                 mimetype: response.mimetype,
             });
             this.editor.insertContent(html);
             this.editor.nodeChanged();
-            await addToast(await getString('status:uploaded', component));
+            await _toast.add(await _str.get_string('status:uploaded', _common.component));
             this.modal.hide();
         } catch (error) {
             this.uploadButton.disabled = false;
-            this.uploadButton.textContent = await getString('action:attach', component);
+            this.uploadButton.textContent = await _str.get_string('action:attach', _common.component);
             const message = error?.message || error?.error || String(error);
-            await addToast(message || await getString('error:upload', component), {type: 'error'});
+            await _toast.add(message || await _str.get_string('error:upload', _common.component), {type: 'error'});
         }
     }
 
@@ -440,3 +468,9 @@ class ScreenRecorder {
         }
     }
 }
+
+_exports.formatDuration = formatDuration;
+_exports.extensionFromMime = extensionFromMime;
+_exports.openRecorder = openRecorder;
+
+});
