@@ -5,7 +5,7 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-import ModalFactory from 'core/modal_factory';
+import Modal from 'core/modal';
 import ModalEvents from 'core/modal_events';
 import * as Templates from 'core/templates';
 import {get_string as getString} from 'core/str';
@@ -67,7 +67,7 @@ export const openRecorder = async(editor) => {
         maxduration: formatDuration(config.maxduration),
     });
     const title = await getString('modal:title', component);
-    const modal = await ModalFactory.create({
+    const modal = await Modal.create({
         title,
         body,
         large: true,
