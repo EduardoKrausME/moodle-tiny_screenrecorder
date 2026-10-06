@@ -109,18 +109,21 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
             }
         }
 
+        $config = get_config('tiny_screenrecorder');
+        $maxduration = property_exists($config, 'maxduration') ? (int) $config->maxduration : 600;
+        $allowwebcam = property_exists($config, 'allowwebcam') ? (bool) $config->allowwebcam : true;
+        $allowmicrophone = property_exists($config, 'allowmicrophone') ? (bool) $config->allowmicrophone : true;
+        $allowppt = property_exists($config, 'allowppt') ? (bool) $config->allowppt : true;
+
         return [
             'data' => [
                 'contextid' => $context->id,
                 'itemid' => $itemid,
-                'maxduration' => max(1, (int) get_config('tiny_screenrecorder', 'maxduration')),
+                'maxduration' => max(1, $maxduration),
                 'maxbytes' => $maxbytes,
-                'allowwebcam' => (bool) get_config('tiny_screenrecorder', 'allowwebcam')
-                    && has_capability('tiny/screenrecorder:usewebcam', $context),
-                'allowmicrophone' => (bool) get_config('tiny_screenrecorder', 'allowmicrophone')
-                    && has_capability('tiny/screenrecorder:usemicrophone', $context),
-                'allowppt' => (bool) get_config('tiny_screenrecorder', 'allowppt')
-                    && has_capability('tiny/screenrecorder:usepresentation', $context),
+                'allowwebcam' => $allowwebcam && has_capability('tiny/screenrecorder:usewebcam', $context),
+                'allowmicrophone' => $allowmicrophone && has_capability('tiny/screenrecorder:usemicrophone', $context),
+                'allowppt' => $allowppt && has_capability('tiny/screenrecorder:usepresentation', $context),
                 'sesskey' => sesskey(),
             ],
         ];

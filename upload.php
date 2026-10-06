@@ -34,7 +34,8 @@ if ($itemid <= 0) {
     throw new moodle_exception('error:invaliddraftitem', 'tiny_screenrecorder');
 }
 
-$maxduration = max(1, (int) get_config('tiny_screenrecorder', 'maxduration'));
+$config = get_config('tiny_screenrecorder');
+$maxduration = property_exists($config, 'maxduration') ? max(1, (int) $config->maxduration) : 600;
 if ($duration > ($maxduration + 2)) {
     throw new moodle_exception('error:durationlimit', 'tiny_screenrecorder');
 }

@@ -61,9 +61,13 @@ class recording_validator {
             return self::MIME_WEBM;
         }
 
-        // ISO Base Media (including normal browser-generated MP4) exposes an ftyp box.
+        // MediaRecorder MP4 output uses an ISO Base Media ftyp box with a video-compatible brand.
         if (strlen($header) >= 12 && substr($header, 4, 4) === 'ftyp') {
-            return self::MIME_MP4;
+            $brand = substr($header, 8, 4);
+            $videobrands = ['isom', 'iso2', 'mp41', 'mp42', 'avc1', 'M4V ', 'qt  '];
+            if (in_array($brand, $videobrands, true)) {
+                return self::MIME_MP4;
+            }
         }
 
         if (class_exists('finfo')) {
