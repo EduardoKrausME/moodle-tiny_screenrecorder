@@ -22,16 +22,4 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {buttonName} from './common';
-import {addMenubarItem, addToolbarButton} from 'editor_tiny/utils';
-
-/**
- * Add Screen Recorder to the Tiny toolbar and Insert menu.
- *
- * @param {Object} instanceConfig
- * @returns {Object}
- */
-export const configure = (instanceConfig) => ({
-    toolbar: addToolbarButton(instanceConfig.toolbar, 'content', buttonName),
-    menu: addMenubarItem(instanceConfig.menu, 'insert', buttonName),
-});
+define(["exports","./common","editor_tiny/utils"],function(_exports,_common,_utils){"use strict";Object.defineProperty(_exports,"__esModule",{value:true});_exports.configure=void 0;_exports.configure=instanceConfig=>({toolbar:(0,_utils.addToolbarButton)(instanceConfig.toolbar,"content",_common.buttonName),menu:(0,_utils.addMenubarItem)(instanceConfig.menu,"insert",_common.buttonName)});});
