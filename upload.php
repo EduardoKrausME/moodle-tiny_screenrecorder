@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Authenticated recording upload endpoint.
+ *
+ * @package    tiny_screenrecorder
+ * @copyright  2026 Eduardo Kraus
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 define('AJAX_SCRIPT', true);
 
 require_once(__DIR__ . '/../../../../../config.php');
