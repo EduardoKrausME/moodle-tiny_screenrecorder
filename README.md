@@ -43,4 +43,4 @@ The plugin has no database tables and no private persistent file area of its own
 
 ## Kapture lineage
 
-The capture flow is based on the screen-recording ideas from Eduardo Kraus' Kapture project and the Kapture integration previously used by `mod_supervideo`. The Tiny plugin refactors that experience around Moodle's TinyMCE plugin contract, AMD modules, Moodle modals, Mustache templates, capabilities and File API instead of embedding the old standalone Kapture page or its module-specific upload endpoints.
+The browser capture engine is now isolated in `amd/src/kapture.js`, following the reusable recorder core extracted from Eduardo Kraus' Kapture project. The Tiny controller delegates screen capture, MediaRecorder lifecycle, audio mixing, duration tracking and automatic stop to that engine, while Moodle-specific UI, webcam composition, upload, sesskey/context validation and editor insertion remain in the plugin. The standalone Kapture application, its jQuery UI, PHP endpoints and FFmpeg bundle are not loaded by the TinyMCE plugin.
