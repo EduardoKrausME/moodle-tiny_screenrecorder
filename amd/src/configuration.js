@@ -1,4 +1,4 @@
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -7,19 +7,47 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Tiny Screen Recorder editor configuration.
  *
- * @module      tiny_screenrecorder/configuration
- * @package   tiny_screenrecorder
- * @copyright   2026 Eduardo Kraus
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @module tiny_screenrecorder/configuration
+ * @package tiny_screenrecorder
+ * @copyright 2026 Eduardo Kraus
+ * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(["exports","./common","editor_tiny/utils"],function(_exports,_common,_utils){"use strict";Object.defineProperty(_exports,"__esModule",{value:true});_exports.configure=void 0;_exports.configure=instanceConfig=>({toolbar:(0,_utils.addToolbarButton)(instanceConfig.toolbar,"content",_common.buttonName),menu:(0,_utils.addMenubarItem)(instanceConfig.menu,"insert",_common.buttonName)});});
+define([
+    './common',
+    'editor_tiny/utils',
+], function(Common, TinyUtils) {
+    /**
+     * Add Screen Recorder to the Tiny toolbar and Insert menu.
+     *
+     * @param {Object} instanceConfig
+     * @returns {Object}
+     */
+    const configure = function(instanceConfig) {
+        return {
+            toolbar: TinyUtils.addToolbarButton(
+                instanceConfig.toolbar,
+                'content',
+                Common.buttonName
+            ),
+            menu: TinyUtils.addMenubarItem(
+                instanceConfig.menu,
+                'insert',
+                Common.buttonName
+            ),
+        };
+    };
+
+    return {
+        configure,
+    };
+});
