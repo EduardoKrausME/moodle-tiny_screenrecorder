@@ -15,5 +15,5 @@
 
 export const component = 'tiny_screenrecorder';
 export const pluginName = 'tiny_screenrecorder/plugin';
-export const buttonName = 'tiny_screenrecorder';
+export const buttonName = 'tiny_screenrecorder_screen';
 export const buttonIcon = 'tiny_screenrecorder_screen';
